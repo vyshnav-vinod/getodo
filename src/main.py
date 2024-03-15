@@ -22,7 +22,6 @@ def main():
     base_dir = args[0]
     out_file = "todo.txt"  # TODO: Ask for output file from User
     if is_dir:
-        # TODO: Recursively visit every file and folder inside
         parse_dir(args[0])
 
     else:  # TODO: Check which file type and then get its corresponding comment syntax ( Prolly make a new func and check file type and call parse_TODO_from_file inside there)
@@ -36,9 +35,9 @@ def main():
 
 def parse_TODO_from_file(file: TextIOWrapper):
     # TODO : Check todo.txt and see that when the comment sign is used like in the if line.startswith... below, then it starts to parse from there.. Maybe make it so that only parse comments that start with TODO
-    file_content = file.readlines()
     global out_file_contents
-    out_file_contents += f"\n{file.name} : \n\n"
+    has_todo = False
+    file_content = file.readlines()
     line_num = 0
     for line in file_content:
         line_num += 1
@@ -50,6 +49,11 @@ def parse_TODO_from_file(file: TextIOWrapper):
             ]  # Get the contents of the comment
             # Check if it is starts with TODO or TODO:
             if line_content.__contains__("TODO"):
+                if (
+                    not has_todo
+                ):  # This is done to not print the file name when there is no todo present in that file
+                    out_file_contents += f"\n{file.name} : \n\n"
+                has_todo = True
                 out_file_contents += f"Line {line_num} - {line_content.strip()}\n"
 
 
@@ -82,7 +86,9 @@ def is_ignored_dir(dir):
     is_virtual_env = path.join(
         base_dir, dir, "pyvenv.cfg"
     )  # All virtual environments created with venv contains a pyenv.cfg file
-    return dir in ignored_dirs or path.exists(is_virtual_env)
+    return dir in ignored_dirs or path.exists(
+        is_virtual_env
+    )  # Check if it is a ignored dir or a virtual env dir
 
 
 def is_allowed_file(file):
