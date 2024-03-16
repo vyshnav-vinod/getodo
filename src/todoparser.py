@@ -8,6 +8,8 @@ from os import path, scandir
 # TODO: Add CLI args and flags
 # TODO: Add option to print to terminal(if user dont want to write to a output file)
 # TODO: Check if args is given or not
+# TODO: Add colors
+# TODO: Config [set output file, ignored dirs, ]
 
 out_file_contents = ""
 base_dir = ""
@@ -41,7 +43,6 @@ def main():
 
 
 def parse_TODO_from_file(file: TextIOWrapper):
-    # TODO : Check todo.txt and see that when the comment sign is used like in the if line.startswith... below, then it starts to parse from there.. Maybe make it so that only parse comments that start with TODO
     global out_file_contents
     has_todo = False
     file_content = file.readlines()
