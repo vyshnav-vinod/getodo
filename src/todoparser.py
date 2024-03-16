@@ -5,9 +5,8 @@ import sys
 from os import path, scandir
 
 
-# TODO: Add CLI args and flags
+# TODO: Add CLI args and flags [Half done]
 # TODO: Add option to print to terminal(if user dont want to write to a output file)
-# TODO: Check if args is given or not
 # TODO: Add colors
 # TODO: Config [set output file, ignored dirs, ]
 
@@ -16,27 +15,26 @@ base_dir = ""
 out_file = ""
 
 valid_file = {
-    ".py":'#',
-    ".rs":"//",
-    ".java":"//",
-    ".c":"//",
-    ".cpp":"//",
-    ".go":'//'
+    ".py": "#",
+    ".rs": "//",
+    ".java": "//",
+    ".c": "//",
+    ".cpp": "//",
+    ".go": "//",
 }
 
 
-def main():
+def main(base, outfile):
     global base_dir
     global out_file
-    args = sys.argv[1:]  # Remove the starting file name
-    is_dir = path.isdir(args[0])
-    base_dir = args[0]
-    out_file = "todo.txt"  # TODO: Ask for output file from User
+    is_dir = path.isdir(base)
+    base_dir = base
+    out_file = outfile or "todo.txt"
     if is_dir:
-        parse_dir(args[0])
+        parse_dir(base_dir)
 
     else:
-        parse_file(args[0])
+        parse_file(base_dir)
 
     with open(out_file, "w+") as file:
         file.write(out_file_contents)
@@ -46,16 +44,16 @@ def parse_TODO_from_file(file: TextIOWrapper):
     global out_file_contents
     has_todo = False
     file_content = file.readlines()
-    comment_syntax = get_comment_syntax(file.name) # Get the comment syntax of that file
+    comment_syntax = get_comment_syntax(
+        file.name
+    )  # Get the comment syntax of that file
     line_num = 0
     for line in file_content:
         line_num += 1
-        if line.startswith(comment_syntax) or line.__contains__(
-            comment_syntax
-        ):  
+        if line.startswith(comment_syntax) or line.__contains__(comment_syntax):
             line_content = line[
-                line.rindex(comment_syntax[0]) + 1:
-            ].strip()  # Get the contents of the comment 
+                line.rindex(comment_syntax[0]) + 1 :
+            ].strip()  # Get the contents of the comment
             # Check if it is starts with TODO or TODO:
             if line_content.startswith("TODO"):
                 if (
@@ -116,8 +114,5 @@ def get_comment_syntax(file: str):
     file_type = file[file.rindex(".") :]
     return valid_file[file_type]
 
-
-if __name__ == "__main__":
-    main()
 
 # TODO : tests
