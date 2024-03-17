@@ -1,5 +1,3 @@
-# Currently only supports Python Files
-
 from io import TextIOWrapper
 from os import path, scandir
 import print_color

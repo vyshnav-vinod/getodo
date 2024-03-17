@@ -19,6 +19,12 @@ Navigate to the directory
 cd getodo/src/
 ```
 
+Install the required dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
 Run the following command
 ```bash
 python3 getodo.py input_path
@@ -41,6 +47,8 @@ Replace `input_path` with the path to the directory or file you want to parse fo
 
 `-o, --output` : Write to the file provided here. If no file is specified, the program will write to `todo.txt`
 
+`-t, --term` : Display the TODO's in the terminal with colors
+
 ### Examples ###
 
 ```bash
@@ -52,3 +60,8 @@ This will parse all the files and sub directories in the current folder and writ
 python3 getodo.py . -o mytodo.txt 
 ```
 This will parse all the files and sub directories in the current folder and write all the TODO's to `mytodo.txt`
+
+```bash
+python3 getodo.py . -t
+```
+This will parse all the files and sub directories in the current folder and display it in the terminal with colors
