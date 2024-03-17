@@ -22,17 +22,20 @@ def main():
 
     # Optional arguments
     parser.add_argument("-o", "--output", help="Output file to store the TODO's")
-    # parser.add_argument("-t", "--term", action="store_true", help="Print the TODO's to terminal")
+    parser.add_argument(
+        "-t", "--term", action="store_true", help="Print the TODO's to terminal"
+    )
+
     # parser.add_argument("-i", "--ignore", nargs="+", help="Ignore specific directories or files")
 
     args = parser.parse_args()
 
     input_path = args.input_path
     output_file = args.output
-    # print_to_terminal = args.term
+    print_to_terminal = args.term
     # ignore_paths = args.ignore
 
-    todoparser.main(input_path, output_file)
+    todoparser.main(input_path, output_file, print_to_terminal)
 
 
 if __name__ == "__main__":
