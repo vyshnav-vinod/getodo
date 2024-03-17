@@ -1,18 +1,16 @@
 # Currently only supports Python Files
 
 from io import TextIOWrapper
-import sys
 from os import path, scandir
-
+import print_color
 
 # TODO: Add CLI args and flags [Half done]
-# TODO: Add option to print to terminal(if user dont want to write to a output file)
-# TODO: Add colors
 # TODO: Config [set output file, ignored dirs, ]
 
 out_file_contents = ""
 base_dir = ""
 out_file = ""
+print_to_term = False
 
 valid_file = {
     ".py": "#",
@@ -24,9 +22,11 @@ valid_file = {
 }
 
 
-def main(base, outfile):
+def main(base, outfile, print_to_terminal):
     global base_dir
     global out_file
+    global print_to_term
+    print_to_term = print_to_terminal
     is_dir = path.isdir(base)
     base_dir = base
     out_file = outfile or "todo.txt"
@@ -36,12 +36,14 @@ def main(base, outfile):
     else:
         parse_file(base_dir)
 
-    with open(out_file, "w+") as file:
-        file.write(out_file_contents)
+    if not print_to_term:
+        with open(out_file, "w+") as file:
+            file.write(out_file_contents)
 
 
 def parse_TODO_from_file(file: TextIOWrapper):
     global out_file_contents
+    global print_to_term
     has_todo = False
     file_content = file.readlines()
     comment_syntax = get_comment_syntax(
@@ -59,9 +61,29 @@ def parse_TODO_from_file(file: TextIOWrapper):
                 if (
                     not has_todo
                 ):  # This is done to not print the file name when there is no todo present in that file
-                    out_file_contents += f"\n{file.name} : \n\n"
+                    if print_to_term:
+                        print("\n")
+                        print_color.print(
+                            f"{file.name} : \n\n",
+                            tag="FILE",
+                            tag_color="green",
+                            color="white",
+                            format="bold",
+                        )
+                    else:
+                        out_file_contents += f"\n{file.name} : \n\n"
                 has_todo = True
-                out_file_contents += f"Line {line_num} - {line_content.strip()}\n"
+                # Find a way to only bold the tags [maybe fork the print_color and add it]
+                if print_to_term:
+                    line_content = line_content.strip()[line_content.index(":") + 1 :]
+                    print_color.print(
+                        f"{line_content}\n",
+                        tag=f"Line {line_num}",
+                        tag_color="cyan",
+                        color="white",
+                    )
+                else:
+                    out_file_contents += f"Line {line_num} - {line_content.strip()}\n"
 
 
 def parse_file(file):
