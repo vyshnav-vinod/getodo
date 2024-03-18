@@ -3,6 +3,7 @@ from os import path, scandir
 import print_color
 
 # TODO: Add CLI args and flags [Half done]
+# TODO: Add option to parse TODO as well along with TODO: and TODO :
 # TODO: Config [set output file, ignored dirs, ]
 
 out_file_contents = ""
@@ -54,8 +55,7 @@ def parse_TODO_from_file(file: TextIOWrapper):
             line_content = line[
                 line.rindex(comment_syntax[0]) + 1 :
             ].strip()  # Get the contents of the comment
-            # Check if it is starts with TODO or TODO:
-            if line_content.startswith("TODO"):
+            if line_content.startswith("TODO:") or line_content.startswith("TODO :"):
                 if (
                     not has_todo
                 ):  # This is done to not print the file name when there is no todo present in that file
@@ -116,16 +116,16 @@ def is_ignored_dir(dir):
     )  # Check if it is a ignored dir or a virtual env dir
 
 
-def is_allowed_file(file):
+def is_allowed_file(file: str):
     # Check if it is of a valid file type
     global out_file
     global valid_file
-
-    return (
-        any(type in file for type in valid_file)
-        and not file.startswith(".")
-        and not file == out_file
-    )
+    file_type = ""
+    if file.__contains__(".") and not file.startswith(
+        "."
+    ):  # Extract file type extension
+        file_type = file[file.rindex(".") :]
+    return file_type in valid_file and not file == out_file
 
 
 def get_comment_syntax(file: str):
