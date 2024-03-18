@@ -49,6 +49,8 @@ Replace `input_path` with the path to the directory or file you want to parse fo
 
 `-t, --term` : Display the TODO's in the terminal with colors
 
+`-i, --ignore` : Ignore parsing the directories/files provided as arguments to this option
+
 ### Examples ###
 
 ```bash
@@ -65,3 +67,8 @@ This will parse all the files and sub directories in the current folder and writ
 python3 getodo.py . -t
 ```
 This will parse all the files and sub directories in the current folder and display it in the terminal with colors
+
+```bash
+python3 getodo.py . -i test.py
+```
+This will parse all the files and sub directories in the current folder except `test.py` and write all the TODO's to `todo.txt`

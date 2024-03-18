@@ -7,6 +7,7 @@
 # getodo.py dir/file -term
 # getodo.py dir/file -i ignoredir/file ignoredir/file ignoredir/file [Maybe make this a one-time option only and store it in a .cfg maybe???]
 
+from os import path
 import todoparser
 
 import argparse
@@ -26,16 +27,21 @@ def main():
         "-t", "--term", action="store_true", help="Print the TODO's to terminal"
     )
 
-    # parser.add_argument("-i", "--ignore", nargs="+", help="Ignore specific directories or files")
+    parser.add_argument(
+        "-i", "--ignore", nargs="+", help="Ignore specific directories or files"
+    )
 
     args = parser.parse_args()
 
     input_path = args.input_path
     output_file = args.output
     print_to_terminal = args.term
-    # ignore_paths = args.ignore
+    ignore_paths = args.ignore
 
-    todoparser.main(input_path, output_file, print_to_terminal)
+    if ignore_paths:
+        ignore_paths = list(map(path.basename, ignore_paths))
+
+    todoparser.main(input_path, output_file, print_to_terminal, ignore_paths)
 
 
 if __name__ == "__main__":

@@ -20,15 +20,25 @@ valid_file = {
     ".go": "//",
 }
 
+ignored_paths = [
+    ".git",
+    "__pycache__",
+]
 
-def main(base, outfile, print_to_terminal):
+
+def main(base, outfile, print_to_terminal, ignore_paths):
     global base_dir
     global out_file
     global print_to_term
+    global ignored_paths
     print_to_term = print_to_terminal
     is_dir = path.isdir(base)
     base_dir = base
     out_file = outfile or "todo.txt"
+    if ignore_paths:
+        ignored_paths.extend(
+            ignore_paths
+        )  # if user provided ignored paths then append it to ignored_paths
     if is_dir:
         parse_dir(base_dir)
 
@@ -93,27 +103,27 @@ def parse_dir(dir):
     dir_content = scandir(dir)
     for dir_or_file in dir_content:
         if dir_or_file.is_dir():
-            if not is_ignored_dir(dir_or_file.name):
+            if not is_ignored(dir_or_file):
                 parse_dir(dir_or_file)
         if dir_or_file.is_file():
-            if is_allowed_file(dir_or_file.name):
+            if is_allowed_file(dir_or_file.name) and not is_ignored(dir_or_file):
                 parse_file(dir_or_file.path)
     dir_content.close()
 
 
-def is_ignored_dir(dir):
+def is_ignored(file_dir_path):
     global base_dir
-    ignored_dirs = [
-        ".git",
-        "__pycache__",
-    ]
-    # TODO : Add option for user to add directory or files to be ignored
-    is_virtual_env = path.join(
-        base_dir, dir, "pyvenv.cfg"
-    )  # All virtual environments created with venv contains a pyenv.cfg file
-    return dir in ignored_dirs or path.exists(
-        is_virtual_env
-    )  # Check if it is a ignored dir or a virtual env dir
+    global ignored_paths
+
+    if file_dir_path.is_file():
+        return file_dir_path.name in ignored_paths
+    else:
+        is_virtual_env = path.join(
+            base_dir, file_dir_path, "pyvenv.cfg"
+        )  # All virtual environments created with venv contains a pyenv.cfg file
+        return file_dir_path.name in ignored_paths or path.exists(
+            is_virtual_env
+        )  # Check if it is a ignored dir or a virtual env dir
 
 
 def is_allowed_file(file: str):
