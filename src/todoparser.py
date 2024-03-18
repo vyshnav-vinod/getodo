@@ -2,9 +2,8 @@ from io import TextIOWrapper
 from os import path, scandir
 import print_color
 
-# TODO: Add CLI args and flags [Half done]
-# TODO: Add option to parse TODO as well along with TODO: and TODO :
-# TODO: Config [set output file, ignored dirs, ]
+
+# TODO: Config file [set output file, ignored dirs, ]
 
 out_file_contents = ""
 base_dir = ""
