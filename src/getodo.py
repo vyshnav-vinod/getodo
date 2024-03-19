@@ -13,6 +13,21 @@ import todoparser
 import argparse
 
 
+class ParseKeyValue(argparse.Action):
+
+    # https://stackoverflow.com/a/68829190/23381273
+
+    def __call__(self, parser, args, values, option_string=None):
+        try:
+            d = dict(map(lambda x: x.split(","), values))
+        except ValueError as err:
+            raise argparse.ArgumentError(
+                self,
+                f"Could not parse arguments {values} as format filetype,commentsyntax",
+            )
+        setattr(args, self.dest, d)
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Scan a file or a directory and extract all the TODO into a file/stdout"
@@ -30,6 +45,14 @@ def main():
     parser.add_argument(
         "-i", "--ignore", nargs="+", help="Ignore specific directories or files"
     )
+    parser.add_argument(
+        "--add_filetypes",
+        metavar="filetype,comment-syntax",
+        nargs="+",
+        dest="add_filetypes",
+        action=ParseKeyValue,
+        help="Parse the custom filetype(s) passed as argument along with their comment syntax to parse the TODO's isnide that file",
+    )
 
     args = parser.parse_args()
 
@@ -37,11 +60,14 @@ def main():
     output_file = args.output
     print_to_terminal = args.term
     ignore_paths = args.ignore
+    add_filetypes = args.add_filetypes  # dir
 
     if ignore_paths:
         ignore_paths = list(map(path.basename, ignore_paths))
 
-    todoparser.main(input_path, output_file, print_to_terminal, ignore_paths)
+    todoparser.main(
+        input_path, output_file, print_to_terminal, ignore_paths, add_filetypes
+    )
 
 
 if __name__ == "__main__":

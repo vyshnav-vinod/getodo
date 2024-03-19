@@ -167,4 +167,5 @@ def get_comment_syntax(file: str):
 
 
 # TODO : tests
+# TODO: Add option to ignore filetypes``
 # TODO: Config file [set output file, ignored dirs, ]
