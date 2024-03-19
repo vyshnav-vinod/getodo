@@ -1,6 +1,6 @@
 from io import TextIOWrapper
 from os import path, scandir
-import print_color
+from colorama import Fore, Style
 
 
 out_file_contents = ""
@@ -87,24 +87,29 @@ def parse_TODO_from_file(file: TextIOWrapper):
                 ):  # This is done to not print the file name when there is no todo present in that file
                     if print_to_term:
                         print("\n")
-                        print_color.print(
-                            f"{file.name} : \n\n",
-                            tag="FILE",
-                            tag_color="green",
-                            color="white",
-                            format="bold",
+                        print(
+                            Fore.GREEN
+                            + Style.BRIGHT
+                            + "[FILE] "
+                            + Fore.LIGHTRED_EX
+                            + f"{file.name}\n"
+                            + Style.RESET_ALL
                         )
                     else:
                         out_file_contents += f"\n{file.name} : \n\n"
                 has_todo = True
-                # TODO: Find a way to only bold the tags [maybe fork the print_color and add it]
                 if print_to_term:
-                    line_content = line_content.strip()[line_content.index(":") + 1 :]
-                    print_color.print(
-                        f"{line_content}\n",
-                        tag=f"Line {line_num}",
-                        tag_color="cyan",
-                        color="white",
+                    line_content = (
+                        line_content[line_content.index(":") + 1 :].strip().capitalize()
+                    )
+                    print(
+                        Fore.CYAN
+                        + Style.BRIGHT
+                        + f"[Line {line_num}] "
+                        + Style.RESET_ALL
+                        + Fore.WHITE
+                        + f"{line_content}"
+                        + Style.RESET_ALL
                     )
                 else:
                     out_file_contents += f"Line {line_num} - {line_content.strip()}\n"
