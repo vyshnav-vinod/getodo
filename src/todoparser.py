@@ -42,19 +42,32 @@ ignored_paths = [
 ]
 
 
-def main(base, outfile, print_to_terminal, ignore_paths):
+def main(base, outfile, print_to_terminal, ignore_paths, add_filetypes):
     global base_dir
     global out_file
     global print_to_term
     global ignored_paths
+
     print_to_term = print_to_terminal
     is_dir = path.isdir(base)
     base_dir = base
     out_file = outfile or "todo.txt"
-    if ignore_paths:
-        ignored_paths.extend(
-            ignore_paths
-        )  # if user provided ignored paths then append it to ignored_paths
+
+    if ignore_paths:  # if user provided ignored paths then append it to ignored_paths
+        ignored_paths.extend(ignore_paths)
+
+    if (
+        add_filetypes
+    ):  # if user provided filetypes along with their comment syntax so TODO's inside those can be parsed
+        for key, value in add_filetypes.items():
+            if (
+                not key in valid_file and not f".{key}" in valid_file
+            ):  # Prevents user from overriding valid_file
+                if not key.startswith("."):
+                    valid_file[f".{key}"] = value
+                else:
+                    valid_file[key] = value
+
     if is_dir:
         parse_dir(base_dir)
 
@@ -69,12 +82,14 @@ def main(base, outfile, print_to_terminal, ignore_paths):
 def parse_TODO_from_file(file: TextIOWrapper):
     global out_file_contents
     global print_to_term
+
     has_todo = False
     file_content = file.readlines()
     comment_syntax = get_comment_syntax(
         file.name
     )  # Get the comment syntax of that file
     line_num = 0
+
     for line in file_content:
         line_num += 1
         if line.startswith(comment_syntax) or line.__contains__(comment_syntax):
@@ -122,6 +137,7 @@ def parse_file(file):
 
 def parse_dir(dir):
     dir_content = scandir(dir)
+
     for dir_or_file in dir_content:
         if dir_or_file.is_dir():
             if not is_ignored(dir_or_file):
@@ -151,7 +167,9 @@ def is_allowed_file(file: str):
     # Check if it is of a valid file type
     global out_file
     global valid_file
+
     file_type = ""
+
     if file.__contains__(".") and not file.startswith(
         "."
     ):  # Extract file type extension
@@ -162,10 +180,11 @@ def is_allowed_file(file: str):
 def get_comment_syntax(file: str):
     # Get the comment syntax of the corresponding file
     global valid_file
+
     file_type = file[file.rindex(".") :]
+
     return valid_file[file_type]
 
 
 # TODO : tests
-# TODO: Add option to ignore filetypes``
 # TODO: Config file [set output file, ignored dirs, ]
