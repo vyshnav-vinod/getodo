@@ -3,8 +3,6 @@ from os import path, scandir
 import print_color
 
 
-# TODO: Config file [set output file, ignored dirs, ]
-
 out_file_contents = ""
 base_dir = ""
 out_file = ""
@@ -17,11 +15,30 @@ valid_file = {
     ".c": "//",
     ".cpp": "//",
     ".go": "//",
+    ".rb": "#",
+    ".js": "//",
+    ".cs": "//",
+    ".lua": "--",
+    ".php": "//",  # TODO: php also supports # as a single line comment, So add parsing for that as well
+    ".kt": "//",
+    ".swift": "//",
+    ".r": "#",
+    ".pl": "#",
+    ".sc": "//",
+    ".ex": "#",
+    ".exs": "#",
+    ".dart": "//",
+    ".clj": ";",
 }
 
 ignored_paths = [
     ".git",
     "__pycache__",
+    ".vscode",
+    ".idea",
+    ".project",
+    ".metadata",
+    ".vs",
 ]
 
 
@@ -80,7 +97,7 @@ def parse_TODO_from_file(file: TextIOWrapper):
                     else:
                         out_file_contents += f"\n{file.name} : \n\n"
                 has_todo = True
-                # Find a way to only bold the tags [maybe fork the print_color and add it]
+                # TODO: Find a way to only bold the tags [maybe fork the print_color and add it]
                 if print_to_term:
                     line_content = line_content.strip()[line_content.index(":") + 1 :]
                     print_color.print(
@@ -145,3 +162,4 @@ def get_comment_syntax(file: str):
 
 
 # TODO : tests
+# TODO: Config file [set output file, ignored dirs, ]
