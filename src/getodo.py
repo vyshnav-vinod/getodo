@@ -13,6 +13,7 @@ class ParseKeyValue(argparse.Action):
 
     def __call__(self, parser, args, values, option_string=None):
         try:
+            # TODO: Raise error when user does --add_filetypes and passes something like txt, without a comment syntax it comment syntax as empty string and causes error so check if user has passed a comment syntax
             d = dict(map(lambda x: x.split(","), values))
         except ValueError as err:
             raise argparse.ArgumentError(
@@ -59,7 +60,13 @@ def main():
     if ignore_paths:
         ignore_paths = list(map(path.basename, ignore_paths))
 
-    TodoParser(base_dir=input_path, out_file=output_file, print_to_term=print_to_terminal, user_ignore_paths=ignore_paths, user_add_filetypes=add_filetypes)
+    TodoParser(
+        base_dir=input_path,
+        out_file=output_file,
+        print_to_term=print_to_terminal,
+        user_ignore_paths=ignore_paths,
+        user_add_filetypes=add_filetypes,
+    )
 
 
 if __name__ == "__main__":

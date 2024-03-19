@@ -7,7 +7,9 @@ A python program that collects all the comments starting with TODO and list it a
 
 ## Installation
 
-You can either download the `zip/tar.gz` from the [releases](https://github.com/vyshnav-vinod/getodo/releases) or Clone this repository to your local machine.
+You can either download the `zip/tar.gz` from the [releases](https://github.com/vyshnav-vinod/getodo/releases) or 
+
+ Clone this repository to your local machine. Cloning might give extra features which have not been released yet and might be unstable
 
 ```bash
 git clone https://github.com/vyshnav-vinod/getodo.git

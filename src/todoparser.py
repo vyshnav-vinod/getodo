@@ -91,51 +91,51 @@ class TodoParser:
             file.name
         )  # Get the comment syntax of that file
         line_num = 0
-
-        for line in file_content:
-            line_num += 1
-            if line.startswith(comment_syntax) or line.__contains__(comment_syntax):
-                line_content = line[
-                    line.rindex(comment_syntax[0]) + 1 :
-                ].strip()  # Get the contents of the comment
-                if line_content.startswith("TODO:") or line_content.startswith(
-                    "TODO :"
-                ):
-                    if (
-                        not has_todo
-                    ):  # This is done to not print the file name when there is no todo present in that file
+        if comment_syntax:
+            for line in file_content:
+                line_num += 1
+                if line.startswith(comment_syntax) or line.__contains__(comment_syntax):
+                    line_content = line[
+                        line.rindex(comment_syntax[0]) + 1 :
+                    ].strip()  # Get the contents of the comment
+                    if line_content.startswith("TODO:") or line_content.startswith(
+                        "TODO :"
+                    ):
+                        if (
+                            not has_todo
+                        ):  # This is done to not print the file name when there is no todo present in that file
+                            if self.print_to_term:
+                                print("\n")
+                                print(
+                                    Fore.GREEN
+                                    + Style.BRIGHT
+                                    + "[FILE] "
+                                    + Fore.LIGHTRED_EX
+                                    + f"{file.name}\n"
+                                    + Style.RESET_ALL
+                                )
+                            else:
+                                self.out_file_contents += f"\n{file.name} : \n\n"
+                        has_todo = True
                         if self.print_to_term:
-                            print("\n")
+                            line_content = (
+                                line_content[line_content.index(":") + 1 :]
+                                .strip()
+                                .capitalize()
+                            )
                             print(
-                                Fore.GREEN
+                                Fore.CYAN
                                 + Style.BRIGHT
-                                + "[FILE] "
-                                + Fore.LIGHTRED_EX
-                                + f"{file.name}\n"
+                                + f"[Line {line_num}] "
+                                + Style.RESET_ALL
+                                + Fore.WHITE
+                                + f"{line_content}"
                                 + Style.RESET_ALL
                             )
                         else:
-                            self.out_file_contents += f"\n{file.name} : \n\n"
-                    has_todo = True
-                    if self.print_to_term:
-                        line_content = (
-                            line_content[line_content.index(":") + 1 :]
-                            .strip()
-                            .capitalize()
-                        )
-                        print(
-                            Fore.CYAN
-                            + Style.BRIGHT
-                            + f"[Line {line_num}] "
-                            + Style.RESET_ALL
-                            + Fore.WHITE
-                            + f"{line_content}"
-                            + Style.RESET_ALL
-                        )
-                    else:
-                        self.out_file_contents += (
-                            f"Line {line_num} - {line_content.strip()}\n"
-                        )
+                            self.out_file_contents += (
+                                f"Line {line_num} - {line_content.strip()}\n"
+                            )
 
     def parse_file(self, file):
         with open(file) as file:
@@ -185,5 +185,6 @@ class TodoParser:
 
         return self.valid_file[file_type]
 
+    # TODO: Fix directory not being ignored when given as argument for -i/--ignore
     # TODO : tests
     # TODO: Config file [set output file, ignored dirs, ]
