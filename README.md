@@ -49,6 +49,8 @@ Replace `input_path` with the path to the directory or file you want to parse fo
 
 `-t, --term` : Display the TODO's in the terminal with colors
 
+`--add_filetypes` : If you have a filetype that is not currently supported by `getodo` you can use this to specify the filetype and the comment syntax and `getodo` will parse the TODO's
+
 `-i, --ignore` : Ignore parsing the directories/files provided as arguments to this option
 
 ### Examples ###
@@ -67,6 +69,11 @@ This will parse all the files and sub directories in the current folder and writ
 python3 getodo.py . -t
 ```
 This will parse all the files and sub directories in the current folder and display it in the terminal with colors
+
+```bash
+python3 getodo.py . --add_filetypes .kk,-- .txt,//
+```
+This will also parse files with the extension `kk` and `txt` and parse all the TODO's inside it.Please note that whatever value you pass along with the filetype will be considered as the comment syntax of that filetype
 
 ```bash
 python3 getodo.py . -i test.py
