@@ -1,14 +1,8 @@
 # CLI functionality code
 
 
-# OPTION FOR CLI
-# getodo.py dir/file
-# getodo.py dir/file -o output.txt
-# getodo.py dir/file -term
-# getodo.py dir/file -i ignoredir/file ignoredir/file ignoredir/file [Maybe make this a one-time option only and store it in a .cfg maybe???]
-
 from os import path
-import todoparser
+from todoparser import TodoParser
 
 import argparse
 
@@ -65,9 +59,7 @@ def main():
     if ignore_paths:
         ignore_paths = list(map(path.basename, ignore_paths))
 
-    todoparser.main(
-        input_path, output_file, print_to_terminal, ignore_paths, add_filetypes
-    )
+    TodoParser(base_dir=input_path, out_file=output_file, print_to_term=print_to_terminal, user_ignore_paths=ignore_paths, user_add_filetypes=add_filetypes)
 
 
 if __name__ == "__main__":
