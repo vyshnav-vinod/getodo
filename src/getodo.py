@@ -15,6 +15,10 @@ class ParseKeyValue(argparse.Action):
         try:
             # TODO: Raise error when user does --add_filetypes and passes something like txt, without a comment syntax it comment syntax as empty string and causes error so check if user has passed a comment syntax
             d = dict(map(lambda x: x.split(","), values))
+            d = {
+                path.basename(x)[path.basename(x).rindex(".") :]: y
+                for x, y in d.items()
+            }  # This is done to extract only the filetype when the directory is also mentioned
         except ValueError as err:
             raise argparse.ArgumentError(
                 self,
