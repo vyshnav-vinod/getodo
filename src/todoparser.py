@@ -50,6 +50,7 @@ class TodoParser:
         self.ignore_paths = user_ignore_paths
         self.add_filetypes = user_add_filetypes
 
+        self.found_todo = False
         self.main()
 
     def main(self):
@@ -79,8 +80,14 @@ class TodoParser:
             self.parse_file(self.base_dir)
 
         if not self.print_to_term:
-            with open(self.out_file, "w+") as file:
-                file.write(self.out_file_contents)
+            if self.out_file_contents:
+                with open(self.out_file, "w+") as file:
+                    file.write(self.out_file_contents)
+            else:
+                print(Fore.RED + Style.BRIGHT + "NO TODO (s) found" + Style.RESET_ALL)
+        else:
+            if not self.found_todo:
+                print(Fore.RED + Style.BRIGHT + "NO TODO (s) found" + Style.RESET_ALL)
 
     def parse_TODO_from_file(self, file: TextIOWrapper):
 
@@ -100,6 +107,7 @@ class TodoParser:
                     if line_content.startswith("TODO:") or line_content.startswith(
                         "TODO :"
                     ):
+                        self.found_todo = True
                         if (
                             not has_todo
                         ):  # This is done to not print the file name when there is no todo present in that file
@@ -187,5 +195,4 @@ class TodoParser:
         return self.valid_file[file_type]
 
     # TODO : tests
-    # TODO: Show no TODO found if not found
     # TODO: Config file [set output file, ignored dirs, ]
