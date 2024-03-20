@@ -22,6 +22,8 @@ cd getodo/src/
 ```
 
 Install the required dependencies
+>[!NOTE]
+>`requirements_dev.txt` is only meant for people who wish to contribute as it includes extra packages mainly for testing
 
 ```bash
 pip install -r requirements.txt
