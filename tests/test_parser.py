@@ -1,7 +1,7 @@
 import pytest
 import sys
 
-sys.path.append("/home/vyshnav/Desktop/vyshnav/Projects/getodo/src")
+sys.path.append("src")
 import todoparser
 
 
