@@ -60,7 +60,6 @@ class TodoParser:
             self.ignore_paths
         ):  # if user provided ignored paths then append it to ignored_paths
             self.ignored_paths.extend(self.ignore_paths)
-
         if (
             self.add_filetypes
         ):  # if user provided filetypes along with their comment syntax so TODO's inside those can be parsed
@@ -142,18 +141,20 @@ class TodoParser:
             self.parse_TODO_from_file(file)
 
     def parse_dir(self, dir):
-        dir_content = scandir(dir)
+        # if not path.basename(path.abspath(dir)) in self.ignored_paths:
+        if not dir in self.ignored_paths:
+            dir_content = scandir(dir)
 
-        for dir_or_file in dir_content:
-            if dir_or_file.is_dir():
-                if not self.is_ignored(dir_or_file):
-                    self.parse_dir(dir_or_file)
-            if dir_or_file.is_file():
-                if self.is_allowed_file(dir_or_file.name) and not self.is_ignored(
-                    dir_or_file
-                ):
-                    self.parse_file(dir_or_file.path)
-        dir_content.close()
+            for dir_or_file in dir_content:
+                if dir_or_file.is_dir():
+                    if not self.is_ignored(dir_or_file):
+                        self.parse_dir(dir_or_file)
+                if dir_or_file.is_file():
+                    if self.is_allowed_file(dir_or_file.name) and not self.is_ignored(
+                        dir_or_file
+                    ):
+                        self.parse_file(dir_or_file.path)
+            dir_content.close()
 
     def is_ignored(self, file_dir_path):
 
@@ -185,6 +186,6 @@ class TodoParser:
 
         return self.valid_file[file_type]
 
-    # TODO: Fix directory not being ignored when given as argument for -i/--ignore
     # TODO : tests
+    # TODO: Show no TODO found if not found
     # TODO: Config file [set output file, ignored dirs, ]

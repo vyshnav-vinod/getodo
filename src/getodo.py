@@ -58,8 +58,11 @@ def main():
     add_filetypes = args.add_filetypes  # dir
 
     if ignore_paths:
-        ignore_paths = list(map(path.basename, ignore_paths))
-
+        for i in range(len(ignore_paths)):
+            if path.isfile(ignore_paths[i]):
+                ignore_paths[i] = path.basename(ignore_paths[i])
+            else:
+                ignore_paths[i] = path.basename(path.abspath(ignore_paths[i]))
     TodoParser(
         base_dir=input_path,
         out_file=output_file,
