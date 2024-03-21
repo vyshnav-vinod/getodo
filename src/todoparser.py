@@ -1,6 +1,6 @@
 from io import TextIOWrapper
 from os import path, scandir
-from colorama import Fore, Style
+from colorama import Fore, Style, init
 
 
 class TodoParser:
@@ -54,7 +54,7 @@ class TodoParser:
         self.main()
 
     def main(self):
-
+        init() # colorama.init()
         is_dir = path.isdir(self.base_dir)
 
         if (
