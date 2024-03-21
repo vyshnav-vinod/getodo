@@ -49,6 +49,10 @@ Replace `input_path` with the path to the directory or file you want to parse fo
 
 `-h, --help` : Display the help command
 
+`-c, --config` : Create a custom config file for getodo. [More Info](https://github.com/vyshnav-vinod/getodo/edit/main/README.md#config-file)
+
+`--override_config` : Run getodo with the default configs 
+
 `-o, --output` : Write to the file provided here. If no file is specified, the program will write to `todo.txt`
 
 `-t, --term` : Display the TODO's in the terminal with colors
@@ -83,3 +87,15 @@ This will also parse files with the extension `kk` and `txt` and parse all the T
 python3 getodo.py . -i test.py
 ```
 This will parse all the files and sub directories in the current folder except `test.py` and write all the TODO's to `todo.txt`
+
+### Config File
+
+when running `getodo`, it will first look for a `getodo_config.toml` file in the root of the directory meant to be parsed. If found, getodo will use the options inside the `getodo_config.toml` file. It includes the path to the output file , the folders and files meant to be ignored by `getodo` and also if any custom filetype is to be parsed as well.
+
+```bash
+python3 getodo.py . -c
+```
+This will start a interactive interface to create the `getodo_config.toml` file and store it in the , in this case, the current directory. Then next time whenever you run `getodo` in that directory, you need not specify any options as `.getodo_config.toml` file will already have them. You can create different config files for different projects, making it easy to just type `getodo.py .` and get your TODO(s).
+
+If there comes a circumstance where you need to ignore some other directories/files or add new filetypes you can use the `--override_config` flag along with the other flags. This will not load the configs from `.getodo_config.toml` and only use the arguments passed. 
+
