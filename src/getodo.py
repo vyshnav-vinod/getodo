@@ -152,8 +152,13 @@ def create_config(config_file_name):
         print(e)
 
     try:
-        with open(".gitignore", "a") as f:
-            f.write(f"\n{config_file_name}")
+        with open(".gitignore", "r") as f:
+            for line in f:
+                if line == config_file_name:
+                    break
+            else:
+                with open(".gitignore", "a") as f:
+                    f.write(f"\n{config_file_name}") # Write the file name only if it is not present in .gitignore
     except Exception as e:
         print(e)
 
