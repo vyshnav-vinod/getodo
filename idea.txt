@@ -12,9 +12,8 @@ Store settings/configs like
 	- colors change
 	- name of default file to output i.e. name of todo.txt
 
-Maybe store as .getodoconf or soemthing similar in current directory
 
 Ask users in a questionary manner but to do not import libraries like questionary, it will just increase the bloat.. simple question asking will be enough
 
 
-
+https://github.com/vyshnav-vinod/getodo/issues/3#issuecomment-2011641903
