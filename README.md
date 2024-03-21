@@ -49,7 +49,7 @@ Replace `input_path` with the path to the directory or file you want to parse fo
 
 `-h, --help` : Display the help command
 
-`-c, --config` : Create a custom config file for getodo. [More Info](https://github.com/vyshnav-vinod/getodo/edit/main/README.md#config-file)
+`-c, --config` : Create a custom config file for getodo. [More Info](https://github.com/vyshnav-vinod/getodo/blob/main/README.md#config-file)
 
 `--override_config` : Run getodo with the default configs 
 
