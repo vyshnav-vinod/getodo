@@ -5,6 +5,7 @@ from os import path
 from todoparser import TodoParser
 
 import argparse
+import questionary
 
 
 class ParseKeyValue(argparse.Action):
@@ -78,7 +79,7 @@ def main():
     use_defaults = args.override_config
 
     if config:
-        create_config()
+        create_config(".getodo_config.toml")
 
     if ignore_paths:
         for i in range(len(ignore_paths)):
@@ -96,8 +97,28 @@ def main():
     )  # Prolly will be put inside if use_defaults:
 
 
-def create_config():
-    pass
+def create_config(config_file_name):
+    out_file = ""
+    user_ignore_paths = []
+    user_add_filetypes = {}
+    
+    out_file = questionary.text("Specify file to save the getodo output [Press ENTER for default]", default="todo.txt").ask()
+    confirm = questionary.confirm("Do you want to add files/folders to be ignored while parsing? ", default= False).ask()
+
+    while confirm:
+        user_ignore_paths.append(questionary.path("Specify file/dir to ignore while parsing", validate=lambda x : True if x else False).ask())
+        confirm = questionary.confirm("Do you want to continue?", default=False).ask()
+    confirm = questionary.confirm("Do you want to add custom filetypes to be parsed? ", default= False).ask()
+
+    while confirm:
+        user_input : str = questionary.text("Specify the filetype and its comment syntax in this order [filetype,commentsyntax]", validate=lambda x : True if x else False).ask()
+        split_values = user_input.split(",")
+        user_add_filetypes[split_values[0]] = split_values[1]
+        confirm = questionary.confirm("Do you want to continue?", default=False).ask()
+
+
+    # TODO : Create a .getodo_config.toml in the project directory and add these into it. Also automatically add this to .gitignore
+    
 
 if __name__ == "__main__":
     main()
