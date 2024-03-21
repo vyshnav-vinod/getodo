@@ -33,10 +33,13 @@ def main():
     )
 
     # Required argument
+
     parser.add_argument("input_path", help="Directory or file to scan for TODO's")
 
     # Optional arguments
+
     parser.add_argument("-o", "--output", help="Output file to store the TODO's")
+
     parser.add_argument(
         "-t", "--term", action="store_true", help="Print the TODO's to terminal"
     )
@@ -52,6 +55,17 @@ def main():
         action=ParseKeyValue,
         help="Parse the custom filetype(s) passed as argument along with their comment syntax to parse the TODO's isnide that file",
     )
+    parser.add_argument(
+        "-c",
+        "--config",
+        action="store_true",
+        help="Add a configuration for this project",
+    )
+    parser.add_argument(
+        "--override_config",
+        action="store_true",
+        help="Do not use the custom config for this project and run getodo with its defaults",
+    )
 
     args = parser.parse_args()
 
@@ -59,7 +73,12 @@ def main():
     output_file = args.output
     print_to_terminal = args.term
     ignore_paths = args.ignore
-    add_filetypes = args.add_filetypes  # dir
+    add_filetypes = args.add_filetypes  # dict
+    config = args.config
+    use_defaults = args.override_config
+
+    if config:
+        create_config()
 
     if ignore_paths:
         for i in range(len(ignore_paths)):
@@ -67,14 +86,18 @@ def main():
                 ignore_paths[i] = path.basename(ignore_paths[i])
             else:
                 ignore_paths[i] = path.basename(path.abspath(ignore_paths[i]))
+
     TodoParser(
         base_dir=input_path,
         out_file=output_file,
         print_to_term=print_to_terminal,
-        user_ignore_paths=ignore_paths,
+        user_ignore_paths=ignore_paths, 
         user_add_filetypes=add_filetypes,
-    )
+    )  # Prolly will be put inside if use_defaults:
 
+
+def create_config():
+    pass
 
 if __name__ == "__main__":
     main()
