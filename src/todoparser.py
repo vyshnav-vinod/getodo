@@ -54,7 +54,7 @@ class TodoParser:
         self.main()
 
     def main(self):
-        init() # colorama.init()
+        init()  # colorama.init()
         is_dir = path.isdir(self.base_dir)
 
         if (
@@ -83,6 +83,12 @@ class TodoParser:
             if self.out_file_contents:
                 with open(self.out_file, "w+") as file:
                     file.write(self.out_file_contents)
+                    print(
+                        Fore.GREEN
+                        + Style.BRIGHT
+                        + f"TODO(s) written to {self.out_file}"
+                        + Style.RESET_ALL
+                    )
             else:
                 print(Fore.RED + Style.BRIGHT + "NO TODO (s) found" + Style.RESET_ALL)
         else:

@@ -1,7 +1,7 @@
 # CLI functionality code
 
 
-from os import path
+from os import path, getcwd
 from todoparser import TodoParser
 
 import argparse
@@ -30,6 +30,7 @@ class ParseKeyValue(argparse.Action):
 
 
 def main():
+    CONFIG_FILE = ".getodo_config.toml"
     parser = argparse.ArgumentParser(
         description="Scan a file or a directory and extract all the TODO into a file/stdout"
     )
@@ -80,7 +81,13 @@ def main():
     use_defaults = args.override_config
 
     if config:
-        create_config(".getodo_config.toml")
+        create_config(CONFIG_FILE)
+
+    if not use_defaults:
+        config_found = config_file_present(CONFIG_FILE)
+
+        if config_found:
+            output_file, ignore_paths, add_filetypes = load_config(CONFIG_FILE)
 
     if ignore_paths:
         for i in range(len(ignore_paths)):
@@ -93,7 +100,7 @@ def main():
         base_dir=input_path,
         out_file=output_file,
         print_to_term=print_to_terminal,
-        user_ignore_paths=ignore_paths, 
+        user_ignore_paths=ignore_paths,
         user_add_filetypes=add_filetypes,
     )  # Prolly will be put inside if use_defaults:
 
@@ -102,25 +109,40 @@ def create_config(config_file_name):
     out_file = ""
     user_ignore_paths = []
     user_add_filetypes = {}
-    
-    out_file = questionary.text("Specify file to save the getodo output [Press ENTER for default]", default="todo.txt").ask()
-    confirm = questionary.confirm("Do you want to add files/folders to be ignored while parsing? ", default= False).ask()
+
+    out_file = questionary.text(
+        "Specify file to save the getodo output [Press ENTER for default]",
+        default="todo.txt",
+    ).ask()
+    confirm = questionary.confirm(
+        "Do you want to add files/folders to be ignored while parsing? ", default=False
+    ).ask()
 
     while confirm:
-        user_ignore_paths.append(questionary.path("Specify file/dir to ignore while parsing", validate=lambda x : True if x else False).ask())
+        user_ignore_paths.append(
+            questionary.path(
+                "Specify file/dir to ignore while parsing",
+                validate=lambda x: True if x else False,
+            ).ask()
+        )
         confirm = questionary.confirm("Do you want to continue?", default=True).ask()
-    confirm = questionary.confirm("Do you want to add custom filetypes to be parsed? ", default= False).ask()
+    confirm = questionary.confirm(
+        "Do you want to add custom filetypes to be parsed? ", default=False
+    ).ask()
 
     while confirm:
-        user_input : str = questionary.text("Specify the filetype and its comment syntax in this order [filetype,commentsyntax]", validate=lambda x : True if x else False).ask()
+        user_input: str = questionary.text(
+            "Specify the filetype and its comment syntax in this order [filetype,commentsyntax]",
+            validate=lambda x: True if x else False,
+        ).ask()
         split_values = user_input.split(",")
         user_add_filetypes[split_values[0]] = split_values[1]
         confirm = questionary.confirm("Do you want to continue?", default=True).ask()
 
     toml_content = {
-        "out_file":out_file,
-        "user_ignore_paths":user_ignore_paths,
-        "user_add_filetypes":user_add_filetypes
+        "out_file": out_file,
+        "user_ignore_paths": user_ignore_paths,
+        "user_add_filetypes": user_add_filetypes,
     }
 
     try:
@@ -135,13 +157,17 @@ def create_config(config_file_name):
     except Exception as e:
         print(e)
 
-
     # TODO : Create a .getodo_config.toml in the project directory and add these into it. Also automatically add this to .gitignore
-    
-def load_config(config_file_name):
-    # Will always look for the config file in the folder getodo is being called
-    pass
 
+
+def load_config(config_file_name):
+    config = toml.load(path.join(getcwd(), config_file_name))
+    return config["out_file"], config["user_ignore_paths"], config["user_add_filetypes"]
+
+
+def config_file_present(config_file_name):
+    # Will always look for the config file in the folder getodo is being called
+    return True if path.exists(path.join(getcwd(), config_file_name)) else False
 
 
 if __name__ == "__main__":
