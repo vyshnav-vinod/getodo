@@ -166,8 +166,6 @@ def create_config(input_path, config_file_name):
     except Exception as e:
         print(e)
 
-    # TODO : Create a .getodo_config.toml in the project directory and add these into it. Also automatically add this to .gitignore
-
 
 def load_config(base_path, config_file_name):
     config = toml.load(path.join(base_path, config_file_name))

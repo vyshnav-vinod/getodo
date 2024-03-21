@@ -199,6 +199,3 @@ class TodoParser:
         file_type = file[file.rindex(".") :]
 
         return self.valid_file[file_type]
-
-    # TODO : tests
-    # TODO: Config file [set output file, ignored dirs, ]
