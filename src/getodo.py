@@ -81,13 +81,15 @@ def main():
     use_defaults = args.override_config
 
     if config:
-        create_config(CONFIG_FILE)
+        create_config(input_path, CONFIG_FILE)
 
     if not use_defaults:
-        config_found = config_file_present(CONFIG_FILE)
+        config_found = config_file_present(input_path, CONFIG_FILE)
 
         if config_found:
-            output_file, ignore_paths, add_filetypes = load_config(CONFIG_FILE)
+            output_file, ignore_paths, add_filetypes = load_config(
+                input_path, CONFIG_FILE
+            )
 
     if ignore_paths:
         for i in range(len(ignore_paths)):
@@ -105,7 +107,7 @@ def main():
     )  # Prolly will be put inside if use_defaults:
 
 
-def create_config(config_file_name):
+def create_config(input_path, config_file_name):
     out_file = ""
     user_ignore_paths = []
     user_add_filetypes = {}
@@ -146,33 +148,35 @@ def create_config(config_file_name):
     }
 
     try:
-        with open(config_file_name, "w+") as f:
+        with open(path.join(input_path, config_file_name), "w+") as f:
             toml.dump(toml_content, f)
     except Exception as e:
         print(e)
 
     try:
-        with open(".gitignore", "r") as f:
+        with open(path.join(input_path, ".gitignore"), "r") as f:
             for line in f:
                 if line == config_file_name:
                     break
             else:
-                with open(".gitignore", "a") as f:
-                    f.write(f"\n{config_file_name}") # Write the file name only if it is not present in .gitignore
+                with open(path.join(input_path, ".gitignore"), "a") as f:
+                    f.write(
+                        f"\n{config_file_name}"
+                    )  # Write the file name only if it is not present in .gitignore
     except Exception as e:
         print(e)
 
     # TODO : Create a .getodo_config.toml in the project directory and add these into it. Also automatically add this to .gitignore
 
 
-def load_config(config_file_name):
-    config = toml.load(path.join(getcwd(), config_file_name))
+def load_config(base_path, config_file_name):
+    config = toml.load(path.join(base_path, config_file_name))
     return config["out_file"], config["user_ignore_paths"], config["user_add_filetypes"]
 
 
-def config_file_present(config_file_name):
+def config_file_present(base_path, config_file_name):
     # Will always look for the config file in the folder getodo is being called
-    return True if path.exists(path.join(getcwd(), config_file_name)) else False
+    return True if path.exists(path.join(base_path, config_file_name)) else False
 
 
 if __name__ == "__main__":
