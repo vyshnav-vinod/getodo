@@ -1,55 +1,59 @@
-
 # GETODO
+> A python program to collect all your TODO(s)
 
-STILL IN EARLY DEVELOPMENT
-
-A python program that collects all the comments starting with TODO and list it all in a text file. Easy to keep track of your TODO's
+`getodo` is a python program that collects all your TODO(s) from a folder/file and list them for you as a file or in the terminal screen. `getodo` makes it easy to keep track of your TODO(s)
 
 ## Installation
 
-You can either download the `zip/tar.gz` from the [releases](https://github.com/vyshnav-vinod/getodo/releases) or 
+ - You can install `getodo` via `pip`
 
- Clone this repository to your local machine. Cloning might give extra features which have not been released yet and might be unstable
+```
+pip install getodo
+```
 
-```bash
+- You can also check out the [releases](https://github.com/vyshnav-vinod/getodo/releases) page to download the latest version of `getodo`. Note that it downloads the source code of `getodo` and you might need to check out this [guide](https://github.com/vyshnav-vinod/getodo/blob/main/README.md#running-from-the-source-code) to run the source code.
+
+- You can also [clone](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) this repository.Cloning the repository can give you access to unreleased versions and might not be stable. Check out this [guide](https://github.com/vyshnav-vinod/getodo/blob/main/README.md#running-from-the-source-code) to run `getodo` if you have cloned it.
+
+```
 git clone https://github.com/vyshnav-vinod/getodo.git
 ```
 
-Navigate to the directory
+### Running from the source code
 
-```bash
-cd getodo/src/
+If you have either downloaded from the [releases](https://github.com/vyshnav-vinod/getodo/releases) or cloned this repository, you might need to setup a few different things.
+
+- Go into the getodo folder
+
+- It is recommended to create a [virtual environment](https://docs.python.org/3/tutorial/venv.html) before installing the packages.
+```
+python3 -m venv venv
 ```
 
-Install the required dependencies
+- Install the required packages from `requirements.txt`
 >[!NOTE]
->`requirements_dev.txt` is only meant for people who wish to contribute as it includes extra packages mainly for testing
+>Use can you either `poetry` or `pip` to install the required packages.
 
-```bash
+``` 
 pip install -r requirements.txt
 ```
 
-Run the following command
-```bash
-python3 getodo.py input_path
-```
-Replace `input_path` with the path to the directory or file you want to parse for TODO's
-
+- Run `getodo` using python
+``` python cli.py input_path ```
 
 ## Usage
 
-
-
-```bash
-python3 getodo.py input_path
 ```
-Replace `input_path` with the path to the directory or file you want to parse for TODO's
+python cli.py input_path [options]
+```
 
-### Options ###
+Replace `input_path` with the path to the folder/file you want to parse. You can just type `.` to parse the current directory for TODO(s)
+
+### Options
 
 `-h, --help` : Display the help command
 
-`-c, --config` : Create a custom config file for getodo. [More Info](https://github.com/vyshnav-vinod/getodo/blob/main/README.md#config-file)
+`-c, --config` : Create a custom config file for getodo. [More Info](https://github.com/vyshnav-vinod/getodo/blob/main/README.md#config)
 
 `--override_config` : Run getodo with the default configs 
 
@@ -61,34 +65,8 @@ Replace `input_path` with the path to the directory or file you want to parse fo
 
 `-i, --ignore` : Ignore parsing the directories/files provided as arguments to this option
 
-### Examples ###
 
-```bash
-python3 getodo.py . 
-```
-This will parse all the files and sub directories in the current folder and write all the TODO's to `todo.txt`
-
-```bash
-python3 getodo.py . -o mytodo.txt 
-```
-This will parse all the files and sub directories in the current folder and write all the TODO's to `mytodo.txt`
-
-```bash
-python3 getodo.py . -t
-```
-This will parse all the files and sub directories in the current folder and display it in the terminal with colors
-
-```bash
-python3 getodo.py . --add_filetypes .kk,-- .txt,//
-```
-This will also parse files with the extension `kk` and `txt` and parse all the TODO's inside it.Please note that whatever value you pass along with the filetype will be considered as the comment syntax of that filetype
-
-```bash
-python3 getodo.py . -i test.py
-```
-This will parse all the files and sub directories in the current folder except `test.py` and write all the TODO's to `todo.txt`
-
-### Config File
+### Config
 
 when running `getodo`, it will first look for a `getodo_config.toml` file in the root of the directory meant to be parsed. If found, getodo will use the options inside the `getodo_config.toml` file. It includes the path to the output file , the folders and files meant to be ignored by `getodo` and also if any custom filetype is to be parsed as well.
 
@@ -99,3 +77,9 @@ This will start a interactive interface to create the `getodo_config.toml` file 
 
 If there comes a circumstance where you need to ignore some other directories/files or add new filetypes you can use the `--override_config` flag along with the other flags. This will not load the configs from `.getodo_config.toml` and only use the arguments passed. 
 
+
+## Contributing
+
+All contributions are welcome. You can submit a issue/bug or request for a feature or ask for help in the [issues](https://github.com/vyshnav-vinod/getodo/issues) tab.
+
+If you like to add a new feature or fix a bug, please checkout [CONTRIBUTING]() guidelines.
