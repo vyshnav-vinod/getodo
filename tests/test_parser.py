@@ -1,8 +1,8 @@
 import pytest
 import sys
 
-sys.path.append("src")
-import todoparser
+sys.path.append("../getodo")
+from getodo import todoparser
 
 
 class TestParser:
