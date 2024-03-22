@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "getodo"
-version = "1.0.1"
+version = "1.0.2"
 description = "A python program to collect all your TODO(s)"
 authors = ["vyshnav-vinod <vyshnav.vinod003@gmail.com>"]
 license = "MIT"
