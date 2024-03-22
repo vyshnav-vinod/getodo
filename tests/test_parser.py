@@ -13,7 +13,7 @@ class TestParser:
             self.cpp_content = file.read()
         with open("tests/other_content.txt", "r") as file:
             self.other_content = file.read()
-        with open("tests/todo.txt", "r") as file:
+        with open("tests/todo_test.txt", "r") as file:
             self.expected_output = file.read()
 
         self.file1 = tmp_path / "file1.py"
