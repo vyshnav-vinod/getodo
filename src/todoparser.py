@@ -27,7 +27,7 @@ class TodoParser:
             ".js": "//",
             ".cs": "//",
             ".lua": "--",
-            ".php": "//",  # TODO: php also supports # as a single line comment, So add parsing for that as well
+            ".php": "//",  # TODO: php also supports another comment syntax, So add parsing for that as well
             ".kt": "//",
             ".swift": "//",
             ".r": "#",
@@ -68,10 +68,19 @@ class TodoParser:
                 if (
                     not key in self.valid_file and not f".{key}" in self.valid_file
                 ):  # Prevents user from overriding valid_file
-                    if not key.startswith("."):
-                        self.valid_file[f".{key}"] = value
+                    if value:
+                        if not key.startswith("."):
+                            self.valid_file[f".{key}"] = value
+                        else:
+                            self.valid_file[key] = value
                     else:
-                        self.valid_file[key] = value
+                        print(
+                            Fore.RED
+                            + Style.BRIGHT
+                            + f"Please add a comment syntax for {key}"
+                            + Style.RESET_ALL
+                        )
+                        exit(1)
 
         if is_dir:
             self.parse_dir(self.base_dir)
