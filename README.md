@@ -43,6 +43,13 @@ pip install -r requirements.txt
 
 ## Usage
 
+If you have downloaded via `pip`
+```
+getodo input_path [options]
+```
+
+else
+
 ```
 python cli.py input_path [options]
 ```
