@@ -2,7 +2,7 @@
 
 
 from os import path, getcwd
-from getodo.todoparser import TodoParser
+from todoparser import TodoParser
 
 import argparse
 import questionary
@@ -177,5 +177,5 @@ def config_file_present(base_path, config_file_name):
     return True if path.exists(path.join(base_path, config_file_name)) else False
 
 
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()

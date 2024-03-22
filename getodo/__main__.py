@@ -1,3 +1,3 @@
-from getodo.getodo import main
+from getodo.cli import main
 
 main()
