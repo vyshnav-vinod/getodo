@@ -2,7 +2,7 @@
 
 
 from os import path, getcwd
-from todoparser import TodoParser
+from getodo.todoparser import TodoParser
 
 import argparse
 import questionary
