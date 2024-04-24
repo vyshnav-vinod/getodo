@@ -1,10 +1,13 @@
 from os import path, scandir
 from json import loads
+from colorama import Fore, Style, init
 
 class TodoParser:
 
     def __init__(self, parse_path, out_file, print_to_term) -> None:
         
+        init() # Colorama
+
         self._todo = ['TODO:', 'TODO :']
         with open(path.join(path.dirname(__file__), "comment_syntax.json"), "r") as f:
             json_data = f.read()
@@ -12,7 +15,8 @@ class TodoParser:
         self.output = {}
 
         self.parse_path = parse_path
-        self.out_file = out_file
+        # Create a out file specified by user or a default "todo.txt" in the folder where `getodo` is run
+        self.out_file = out_file or "todo.txt" 
         self.print_to_term = print_to_term
 
         if path.isdir(parse_path):
@@ -24,7 +28,19 @@ class TodoParser:
             # User provided a file to parse
             self.parse_file(parse_path)
             pass
-    
+        
+        if not self.output:
+            print(Fore.RED + Style.BRIGHT + "NO TODO (s) found" + Style.RESET_ALL)
+            exit(0)
+
+        if self.print_to_term:
+            self.print_to_terminal()
+            self.write_out_file()
+        
+        else:
+            # Only write to output file
+            self.write_out_file()
+
 
     def parse_dir(self, dir):
         # Recursively walk the directory and when the file is encountered, parse it
@@ -73,5 +89,15 @@ class TodoParser:
         for c in s:
             if c.isalpha():
                 return s.index(c)
-            
+
+
+    def print_to_terminal(self):
+        for key,value in self.output.items():
+            print(Fore.GREEN + Style.BRIGHT + "\n[FILE] "+Fore.LIGHTRED_EX+f"{key}\n"+Style.RESET_ALL)
+            for line_num, content in value.items():
+                print(Fore.CYAN + Style.BRIGHT + f"[Line {line_num}] " + Style.RESET_ALL + Fore.WHITE + f"{content}" + Style.RESET_ALL)
+
+
+    def write_out_file(self):
+        pass    
 # TODO: After completing this, write tests before moving to next portion of the flags
