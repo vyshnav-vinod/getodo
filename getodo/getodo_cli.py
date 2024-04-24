@@ -1,3 +1,5 @@
+# Contains the CLI of getodo
+
 try:
     from getodo.getodo import TodoParser
 except:

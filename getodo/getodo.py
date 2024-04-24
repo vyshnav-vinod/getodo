@@ -1,5 +1,11 @@
+# Contains the main parser of getodo 
+
+try:
+    from getodo.utils import load_comments, get_comment_syntax, get_first_letter_index, print_error
+except:
+    from utils import load_comments, get_comment_syntax, get_first_letter_index, print_error
+
 from os import path, scandir
-from json import loads
 from colorama import Fore, Style, init
 
 class TodoParser:
@@ -9,9 +15,7 @@ class TodoParser:
         init() # Colorama
 
         self._todo = ['TODO:', 'TODO :']
-        with open(path.join(path.dirname(__file__), "comment_syntax.json"), "r") as f:
-            json_data = f.read()
-        self._comments = loads(json_data)
+        self._comments = load_comments()
         self.output = {}
 
         self.parse_path = parse_path
@@ -33,6 +37,7 @@ class TodoParser:
             print(Fore.RED + Style.BRIGHT + "NO TODO (s) found" + Style.RESET_ALL)
             exit(0)
 
+        # TODO: Add out_file name to .gitignore (utility function)
         if self.print_to_term:
             # Right now, while printing to terminal, TODO(s) will also be stored in the output file
             # TODO: Give option to only print to terminal
@@ -57,39 +62,31 @@ class TodoParser:
 
 
     def parse_file(self, file):
-        with open(file) as f:
-            # Parse TODO from the file
-            current_comment_syntax = self.get_comment_syntax(f.name)
-            
-            if not current_comment_syntax:
-                print(f"File type of {f.name} is not yet implemented [ADD TO IGNORE FILES]")
-            
-            else:
-                line_num = 0
-                file_todo = {}
-                for line in f.readlines():
-                    line = line.strip()
-                    line_num += 1
-
-                    if any(line.startswith(syntax) for syntax in current_comment_syntax):
-                        line = line[self.get_first_letter_index(line):]
-                        
-                        if any(line.startswith(todo) for todo in self._todo):
-                            file_todo[line_num] = line
+        try:
+            with open(file) as f:
+                # Parse TODO from the file
+                current_comment_syntax = get_comment_syntax(f.name, self._comments)
                 
-                if file_todo:
-                    self.output[f.name] = file_todo
+                if not current_comment_syntax:
+                    print(f"File type of {f.name} is not yet implemented [ADD TO IGNORE FILES]")
+                
+                else:
+                    line_num = 0
+                    file_todo = {}
+                    for line in f.readlines():
+                        line = line.strip()
+                        line_num += 1
 
-
-    def get_comment_syntax(self, file):
-        file_type = file[file.rindex('.'):]
-        return self._comments.get(file_type, '')
-
-
-    def get_first_letter_index(self, s: str):
-        for c in s:
-            if c.isalpha():
-                return s.index(c)
+                        if any(line.startswith(syntax) for syntax in current_comment_syntax):
+                            line = line[get_first_letter_index(line):]
+                            
+                            if any(line.startswith(todo) for todo in self._todo):
+                                file_todo[line_num] = line
+                    
+                    if file_todo:
+                        self.output[f.name] = file_todo
+        except Exception as e:
+            print_error(e)
 
 
     def print_to_terminal(self):
@@ -109,8 +106,7 @@ class TodoParser:
                     f.write("\n--------------------------------------------------------------------------------\n")
             print(Fore.GREEN + Style.BRIGHT + f"\nTODO(s) written to {self.out_file}" + Style.RESET_ALL)
         except Exception as e:
-            print(Fore.RED + Style.BRIGHT + "Encountered Error" + Style.RESET_ALL)
-            print(e)
+            print_error(e)
 
 # TODO: After completing this, write tests before moving to next portion of the flags
 
