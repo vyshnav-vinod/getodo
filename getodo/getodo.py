@@ -8,7 +8,6 @@ class TodoParser:
         with open("comment_syntax.json", "r") as f:
             json_data = f.read()
         self._comments = loads(json_data)
-
         self.parse_path = parse_path
         self.out_file = out_file
         self.print_to_term = print_to_term
@@ -36,13 +35,28 @@ class TodoParser:
                 self.parse_file(contents)
 
 
-
     def parse_file(self, file):
         with open(file) as f:
             # Parse TODO from the file
-            for line in f.readlines():
-                pass
+            current_comment_syntax = self.get_comment_syntax(f.name)
+            
+            if not current_comment_syntax:
+                print(f"File type of {f.name} is not yet implemented [ADD TO IGNORE FILES]")
+            
+            else:
+                print(f"{f.name} = {current_comment_syntax}")
+                
+                for line in f.readlines():
+                    line = line.strip()
+                    
+                    if any(line.startswith(syntax) for syntax in current_comment_syntax):
+                        # line = line[:]
+                        pass
 
+    
 
+    def get_comment_syntax(self, file):
+        file_type = file[file.rindex('.'):]
+        return self._comments.get(file_type, '')
 
 # TODO: After completing this, write tests before moving to next portion of the flags
