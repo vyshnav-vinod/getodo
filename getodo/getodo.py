@@ -50,13 +50,21 @@ class TodoParser:
                     line = line.strip()
                     
                     if any(line.startswith(syntax) for syntax in current_comment_syntax):
-                        # line = line[:]
-                        pass
-
+                        line = line[self.get_first_letter_index(line):]
+                        
+                        if any(line.startswith(todo) for todo in self._todo):
+                            # Decide what to do with the TODO's (either print directly or store in variable to reduce code for printing to term or writing to file or both.. just reduce code)
+                            pass
     
 
     def get_comment_syntax(self, file):
         file_type = file[file.rindex('.'):]
         return self._comments.get(file_type, '')
 
+
+    def get_first_letter_index(self, s: str):
+        for c in s:
+            if c.isalpha():
+                return s.index(c)
+            
 # TODO: After completing this, write tests before moving to next portion of the flags
