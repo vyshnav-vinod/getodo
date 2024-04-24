@@ -34,6 +34,8 @@ class TodoParser:
             exit(0)
 
         if self.print_to_term:
+            # Right now, while printing to terminal, TODO(s) will also be stored in the output file
+            # TODO: Give option to only print to terminal
             self.print_to_terminal()
             self.write_out_file()
         
@@ -73,7 +75,6 @@ class TodoParser:
                         line = line[self.get_first_letter_index(line):]
                         
                         if any(line.startswith(todo) for todo in self._todo):
-                            # Decide what to do with the TODO's (either print directly or store in variable to reduce code for printing to term or writing to file or both.. just reduce code)
                             file_todo[line_num] = line
                 
                 if file_todo:
@@ -99,5 +100,18 @@ class TodoParser:
 
 
     def write_out_file(self):
-        pass    
+        try:
+            with open(self.out_file, "w+") as f:
+                for key, value in self.output.items():
+                    f.write(f"[FILE] {key}\n")
+                    for line_num, content in value.items():
+                        f.write(f"\n[Line {line_num}] {content}")
+                    f.write("\n--------------------------------------------------------------------------------\n")
+            print(Fore.GREEN + Style.BRIGHT + f"\nTODO(s) written to {self.out_file}" + Style.RESET_ALL)
+        except Exception as e:
+            print(Fore.RED + Style.BRIGHT + "Encountered Error" + Style.RESET_ALL)
+            print(e)
+
 # TODO: After completing this, write tests before moving to next portion of the flags
+
+# TODO: Move util functions like get_comment_syntax and get_first_letter_index to seperate file/folder
