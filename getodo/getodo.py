@@ -4,10 +4,13 @@ from json import loads
 class TodoParser:
 
     def __init__(self, parse_path, out_file, print_to_term) -> None:
+        
         self._todo = ['TODO:', 'TODO :']
-        with open("comment_syntax.json", "r") as f:
+        with open(path.join(path.dirname(__file__), "comment_syntax.json"), "r") as f:
             json_data = f.read()
         self._comments = loads(json_data)
+        self.output = {}
+
         self.parse_path = parse_path
         self.out_file = out_file
         self.print_to_term = print_to_term
@@ -44,18 +47,22 @@ class TodoParser:
                 print(f"File type of {f.name} is not yet implemented [ADD TO IGNORE FILES]")
             
             else:
-                print(f"{f.name} = {current_comment_syntax}")
-                
+                line_num = 0
+                file_todo = {}
                 for line in f.readlines():
                     line = line.strip()
-                    
+                    line_num += 1
+
                     if any(line.startswith(syntax) for syntax in current_comment_syntax):
                         line = line[self.get_first_letter_index(line):]
                         
                         if any(line.startswith(todo) for todo in self._todo):
                             # Decide what to do with the TODO's (either print directly or store in variable to reduce code for printing to term or writing to file or both.. just reduce code)
-                            pass
-    
+                            file_todo[line_num] = line
+                
+                if file_todo:
+                    self.output[f.name] = file_todo
+
 
     def get_comment_syntax(self, file):
         file_type = file[file.rindex('.'):]
