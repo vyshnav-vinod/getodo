@@ -22,7 +22,7 @@ def main():
 
     # Flags
 
-    parser.add_argument("-o", "--output", nargs="?", const=utils.load_getodo_cfg()['default_out_file'], help="File to store the output")
+    parser.add_argument("-o", "--output", nargs="?", const="no_out", help="File to store the output")
     parser.add_argument("-t", "--term", action="store_true", help="Print the output to terminal")
 
     args = parser.parse_args()
@@ -44,11 +44,12 @@ if __name__ == '__main__':
 
 
 
-# --------------------
+# -------------------- HOW THE FLAGS WORK--------------------
 
 # getodo parse_path -> Just stores to outfile(rn default(will be changed when configs added))
 # getodo parse_path -t -> Only prints to terminal
+# getodo parse_path -o out_file -> Saves to file provided by the user
 # getodo parse_path -t -o -> Prints to term and stores to out file(rn default, in future will be changed when configs are added)
 # getodo parse_path -t -o filename -> Prints to term and stores to outfile(name specified by user)
 
-# --------------------
+# -----------------------------------------------------------

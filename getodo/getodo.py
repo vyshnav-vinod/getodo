@@ -21,7 +21,7 @@ class TodoParser:
 
         self.parse_path = parse_path
         # Create a out file specified by user or a default  in the folder where `getodo` is run
-        self.out_file = out_file or self.cfg['default_out_file'] 
+        self.out_file = out_file 
         self.print_to_term = print_to_term
 
         if path.isdir(parse_path):
@@ -39,14 +39,31 @@ class TodoParser:
             exit(0)
 
         if self.print_to_term:
-            # Right now, while printing to terminal, TODO(s) will also be stored in the output file
-            # TODO: Give option to only print to terminal
             self.print_to_terminal()
-            self.write_out_file()
+            # Below condition will determine whether or not to save to a file depending 
+            # on how the user has used the flags
+            # Check the end of `getodo_cli.py` to know how the flags work
+
+            if self.out_file: # If user wants to save to a file
+                if not self.out_file == "no_out":
+                    self.write_out_file() # Save to file defined by user
+                else:
+                    self.out_file = self.cfg['default_out_file']
+                    self.write_out_file() # Save to default file
         
         else:
-            # Only write to output file
-            self.write_out_file()
+
+            if not self.out_file: # No output file was provided by user
+                self.out_file = self.cfg['default_out_file']
+                self.write_out_file()
+            
+            else: # Output file was provided by user 
+                if self.out_file == "no_out": 
+                    # This check is need to see whether user has not passed any out_file
+                    # when only the -o flag is used
+                    utils.print_error("Please provide a path to a output file in which you wish to save the output")
+                    exit(-1)
+                self.write_out_file()
 
 
     def parse_dir(self, dir):

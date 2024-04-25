@@ -26,7 +26,7 @@ def get_first_letter_index(s: str) -> int:
             return s.index(c)
         
 
-def print_error(e: Exception) -> None:
+def print_error(e: Exception | str) -> None:
     print(Fore.RED + Style.BRIGHT + "Encountered Error" + Style.RESET_ALL)
     print(e)
     exit(-1)
