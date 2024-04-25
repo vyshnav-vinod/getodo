@@ -37,7 +37,6 @@ class TodoParser:
             print(Fore.RED + Style.BRIGHT + "NO TODO (s) found" + Style.RESET_ALL)
             exit(0)
 
-        # TODO: Add out_file name to .gitignore (utility function)
         if self.print_to_term:
             # Right now, while printing to terminal, TODO(s) will also be stored in the output file
             # TODO: Give option to only print to terminal
