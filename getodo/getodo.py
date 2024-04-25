@@ -1,9 +1,9 @@
 # Contains the main parser of getodo 
 
 try:
-    from getodo.utils import load_comments, get_comment_syntax, get_first_letter_index, print_error
-except:
-    from utils import load_comments, get_comment_syntax, get_first_letter_index, print_error
+    from getodo import utils
+except ImportError:
+    import utils
 
 from os import path, scandir
 from colorama import Fore, Style, init
@@ -15,7 +15,7 @@ class TodoParser:
         init() # Colorama
 
         self._todo = ['TODO:', 'TODO :']
-        self._comments = load_comments()
+        self._comments = utils.load_comments()
         self.output = {}
 
         self.parse_path = parse_path
@@ -65,7 +65,7 @@ class TodoParser:
         try:
             with open(file) as f:
                 # Parse TODO from the file
-                current_comment_syntax = get_comment_syntax(f.name, self._comments)
+                current_comment_syntax = utils.get_comment_syntax(f.name, self._comments)
                 
                 if not current_comment_syntax:
                     print(f"File type of {f.name} is not yet implemented [ADD TO IGNORE FILES]")
@@ -78,7 +78,7 @@ class TodoParser:
                         line_num += 1
 
                         if any(line.startswith(syntax) for syntax in current_comment_syntax):
-                            line = line[get_first_letter_index(line):]
+                            line = line[utils.get_first_letter_index(line):]
                             
                             if any(line.startswith(todo) for todo in self._todo):
                                 file_todo[line_num] = line
@@ -86,7 +86,7 @@ class TodoParser:
                     if file_todo:
                         self.output[f.name] = file_todo
         except Exception as e:
-            print_error(e)
+            utils.print_error(e)
 
 
     def print_to_terminal(self):
@@ -104,10 +104,9 @@ class TodoParser:
                     for line_num, content in value.items():
                         f.write(f"\n[Line {line_num}] {content}")
                     f.write("\n--------------------------------------------------------------------------------\n")
-            print(Fore.GREEN + Style.BRIGHT + f"\nTODO(s) written to {self.out_file}" + Style.RESET_ALL)
+            print(Fore.GREEN + Style.BRIGHT + f"\nTODO(s) written to {path.abspath(self.out_file)}" + Style.RESET_ALL)
+            utils.add_to_gitignore(self.parse_path, self.out_file)
         except Exception as e:
-            print_error(e)
+            utils.print_error(e)
 
 # TODO: After completing this, write tests before moving to next portion of the flags
-
-# TODO: Move util functions like get_comment_syntax and get_first_letter_index to seperate file/folder

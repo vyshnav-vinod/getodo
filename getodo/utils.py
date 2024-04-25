@@ -25,3 +25,26 @@ def print_error(e: Exception) -> None:
     print(Fore.RED + Style.BRIGHT + "Encountered Error" + Style.RESET_ALL)
     print(e)
     exit(-1)
+
+
+def add_to_gitignore(parse_path: str, out_file: str) -> None:
+    # Assume .gitignore is in the root of the input_path
+    gitignore_file = path.join(path.abspath(path.dirname(parse_path)), ".gitignore")
+    
+    if path.exists(gitignore_file):
+        try:
+            with open(gitignore_file, "r") as f:
+                lines = f.readlines()
+                for line in lines:
+                    if line.strip() == out_file:
+                        exit(0)
+            with open(gitignore_file, "a") as f:
+                f.write(out_file + "\n")
+                # TODO: Make this configurable (Maybe user doesnot want us to write to gitignore)
+                print(Fore.GREEN + Style.BRIGHT + f"Appended {out_file} to .gitignore" + Style.RESET_ALL)
+        except Exception as e:
+            print_error(e)
+    
+    else:
+        # TODO: Make this configurable (maybe allow user to specify where the gitignore is)
+        print(Fore.RED + Style.BRIGHT + "No .gitignore found in root to append the output file name to it" + Style.RESET_ALL)
