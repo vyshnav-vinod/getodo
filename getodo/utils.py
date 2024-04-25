@@ -33,7 +33,8 @@ def print_error(e: Exception) -> None:
 
 def add_to_gitignore(parse_path: str, out_file: str) -> None:
     # Assume .gitignore is in the root of the input_path
-    gitignore_file = path.join(path.abspath(path.dirname(parse_path)), ".gitignore")
+    gitignore_root = path.abspath(path.dirname(parse_path))
+    gitignore_file = path.join(gitignore_root, ".gitignore")
     
     if path.exists(gitignore_file):
         try:
@@ -51,4 +52,4 @@ def add_to_gitignore(parse_path: str, out_file: str) -> None:
 
     else:
         # TODO: Make this configurable (maybe allow user to specify where the gitignore is)
-        print(Fore.RED + Style.BRIGHT + "No .gitignore found in root to append the output file name to it" + Style.RESET_ALL)
+        print(Fore.RED + Style.BRIGHT + f"No .gitignore found in {gitignore_root} to append the output file name to it" + Style.RESET_ALL)

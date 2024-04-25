@@ -96,6 +96,8 @@ class TodoParser:
 
 
     def write_out_file(self):
+        #TODO: output file is being saved in folder when getodo is run
+        # Change it to folder of parse_path
         try:
             with open(self.out_file, "w+") as f:
                 for key, value in self.output.items():
@@ -108,4 +110,5 @@ class TodoParser:
         except Exception as e:
             utils.print_error(e)
 
-# TODO: After completing this, write tests before moving to next portion of the flags
+
+# TODO: IDEA: Find a way to support multi line TODO's without having to type TODO in each line

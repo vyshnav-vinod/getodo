@@ -33,3 +33,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+# TODO: Next implement the add-filetypes and ignore flags
