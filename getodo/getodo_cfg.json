@@ -22,5 +22,5 @@
     ".clj": [";"]
   },
   "default_out_file": "todo.txt",
-  "_todo": "['TODO:', 'TODO :']"
+  "_todo": ["TODO:", "TODO :"]
 }

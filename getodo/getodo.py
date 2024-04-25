@@ -14,13 +14,14 @@ class TodoParser:
         
         init() # Colorama
 
-        self._todo = ['TODO:', 'TODO :']
-        self._comments = utils.load_comments()
+        self.cfg = utils.load_getodo_cfg()
+        self._todo = self.cfg['_todo']
+        self._comments = self.cfg['comment_syntax']
         self.output = {}
 
         self.parse_path = parse_path
-        # Create a out file specified by user or a default "todo.txt" in the folder where `getodo` is run
-        self.out_file = out_file or "todo.txt" 
+        # Create a out file specified by user or a default  in the folder where `getodo` is run
+        self.out_file = out_file or self.cfg['default_out_file'] 
         self.print_to_term = print_to_term
 
         if path.isdir(parse_path):
@@ -96,7 +97,7 @@ class TodoParser:
 
 
     def write_out_file(self):
-        #TODO: output file is being saved in folder when getodo is run
+        #TODO: output file is being saved in folder where getodo is run
         # Change it to folder of parse_path
         try:
             with open(self.out_file, "w+") as f:
