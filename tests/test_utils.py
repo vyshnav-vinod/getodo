@@ -3,7 +3,7 @@ from getodo import getodo
 
 
 def test_get_comment_syntax():
-    _comments = getodo.utils.load_comments()
+    _comments = getodo.utils.load_getodo_cfg()['comment_syntax']
 
     files = {
         "supported_file1": ["file1.py", ["#"]],

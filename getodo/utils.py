@@ -5,9 +5,10 @@ from json import loads
 from colorama import Fore, Style
 
 
-def load_comments() -> dict:
+def load_getodo_cfg() -> dict:
+    # Loads the content of getodo_cfg.json
     try:
-        with open(path.join(path.dirname(__file__), "comment_syntax.json"), "r") as f:
+        with open(path.join(path.dirname(__file__), "getodo_cfg.json"), "r") as f:
             json_data = f.read()
         return loads(json_data)
     except Exception as e:
