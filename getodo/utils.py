@@ -4,10 +4,14 @@ from os import path
 from json import loads
 from colorama import Fore, Style
 
-def load_comments()  -> dict:
-    with open(path.join(path.dirname(__file__), "comment_syntax.json"), "r") as f:
-        json_data = f.read()
-    return loads(json_data)
+
+def load_comments() -> dict:
+    try:
+        with open(path.join(path.dirname(__file__), "comment_syntax.json"), "r") as f:
+            json_data = f.read()
+        return loads(json_data)
+    except Exception as e:
+        print_error(e)
 
 
 def get_comment_syntax(file: str, _comments: dict) -> list | None:
@@ -44,7 +48,7 @@ def add_to_gitignore(parse_path: str, out_file: str) -> None:
                 print(Fore.GREEN + Style.BRIGHT + f"Appended {out_file} to .gitignore" + Style.RESET_ALL)
         except Exception as e:
             print_error(e)
-    
+
     else:
         # TODO: Make this configurable (maybe allow user to specify where the gitignore is)
         print(Fore.RED + Style.BRIGHT + "No .gitignore found in root to append the output file name to it" + Style.RESET_ALL)
