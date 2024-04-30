@@ -22,5 +22,18 @@
     ".clj": [";"]
   },
   "default_out_file": "todo.txt",
-  "_todo": ["TODO:", "TODO :"]
+  "_todo": ["TODO:", "TODO :"],
+  "default_ignored": [
+    ".git",
+    "__pycache__",
+    ".vscode",
+    ".idea",
+    ".project",
+    ".metadata",
+    ".vs",
+    ".pytest_cache",
+    ".gitignore",
+    ".json",
+    ".txt"
+  ]
 }

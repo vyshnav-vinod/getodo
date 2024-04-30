@@ -24,6 +24,7 @@ def main():
 
     parser.add_argument("-o", "--output", nargs="?", const="no_out", help="File to store the output")
     parser.add_argument("-t", "--term", action="store_true", help="Print the output to terminal")
+    parser.add_argument("-i", "--ignore", nargs="+", help="Ignore directories and files")
 
     args = parser.parse_args()
 
@@ -32,14 +33,15 @@ def main():
     parse_path = args.parse_path
     out_file = args.output
     print_to_term = args.term
+    ignore = args.ignore
 
-    TodoParser(parse_path=parse_path, out_file=out_file, print_to_term=print_to_term)
+    TodoParser(parse_path=parse_path, out_file=out_file, print_to_term=print_to_term, ignore=ignore)
 
 
 if __name__ == '__main__':
     main()
 
-# TODO: Next implement the add-filetypes and ignore flags
+# TODO: Next implement the ignore flag
 
 
 

@@ -3,6 +3,7 @@
 from os import path
 from json import loads
 from colorama import Fore, Style
+from re import match
 
 
 def load_getodo_cfg() -> dict:
@@ -46,11 +47,17 @@ def add_to_gitignore(parse_path: str, out_file: str) -> None:
                         exit(0)
             with open(gitignore_file, "a") as f:
                 f.write(out_file + "\n")
-                # TODO: Make this configurable (Maybe user doesnot want us to write to gitignore)
                 print(Fore.GREEN + Style.BRIGHT + f"Appended {out_file} to .gitignore" + Style.RESET_ALL)
         except Exception as e:
             print_error(e)
 
     else:
-        # TODO: Make this configurable (maybe allow user to specify where the gitignore is)
         print(Fore.RED + Style.BRIGHT + f"No .gitignore found in {gitignore_root} to append the output file name to it" + Style.RESET_ALL)
+
+
+def is_ignored(file_path: str, list_ignored: list) -> bool:
+    file_path = path.basename(file_path)
+    for ignore in list_ignored:
+        if file_path.endswith(ignore):
+            return True
+    return False
