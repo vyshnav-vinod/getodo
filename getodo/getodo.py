@@ -32,7 +32,15 @@ class TodoParser:
                 if path.basename(item):
                     self._ignored.append(path.basename(item))
                 else:
-                    self._ignored.append(path.dirname(item))
+                    item: str = path.dirname(item)
+                    try:
+                        if item.index("/") != 0:
+                            self._ignored.append(item.split("/")[-1])
+                        else:
+                            self._ignored.append(item)
+                    except:
+                        self._ignored.append(item)
+                    
 
         if path.isdir(parse_path):
             # User provided a directory to parse
@@ -82,7 +90,7 @@ class TodoParser:
         
         for contents in dir_contents:
             # use contents.name
-            if utils.is_ignored(contents.name, self._ignored):
+            if utils.is_ignored(self.parse_path, contents.name, self._ignored):
                 continue
             
             if contents.is_dir():

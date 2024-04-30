@@ -37,7 +37,7 @@ def add_to_gitignore(parse_path: str, out_file: str) -> None:
     # Assume .gitignore is in the root of the input_path
     gitignore_root = path.abspath(path.dirname(parse_path))
     gitignore_file = path.join(gitignore_root, ".gitignore")
-    
+   
     if path.exists(gitignore_file):
         try:
             with open(gitignore_file, "r") as f:
@@ -55,11 +55,13 @@ def add_to_gitignore(parse_path: str, out_file: str) -> None:
         print(Fore.RED + Style.BRIGHT + f"No .gitignore found in {gitignore_root} to append the output file name to it" + Style.RESET_ALL)
 
 
-def is_ignored(file_path: str, list_ignored: list) -> bool:
-    if path.exists(path.join(path.abspath(file_path), "pyvenv.cfg")):
+def is_ignored(parse_path: str, file_path: str, list_ignored: list) -> bool:
+    if path.exists(path.join(path.abspath(path.join(parse_path, file_path)), "pyvenv.cfg")):
         return True # It is a virtual env directory
 
     for ignore in list_ignored:
         if file_path.endswith(ignore):
             return True
     return False
+
+# TODO: Bug, not being added to gitignore

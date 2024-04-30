@@ -31,4 +31,4 @@ def test_is_ignored():
     }
 
     for key, value in expected_output.items():
-        assert getodo.utils.is_ignored(key, _ignored) == value
+        assert getodo.utils.is_ignored("", key, _ignored) == value
