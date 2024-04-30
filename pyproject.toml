@@ -1,23 +1,19 @@
 [tool.poetry]
 name = "getodo"
-version = "1.0.2"
+version = "2.0.0"
 description = "A python program to collect all your TODO(s)"
-authors = ["vyshnav-vinod <vyshnav.vinod003@gmail.com>"]
+authors = ["Vyshnav Vinod <vyshnav.vinod003@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
 colorama = "^0.4.6"
-questionary = "^2.0.1"
-toml = "^0.10.2"
 
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.1.1"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-getodo = "getodo.cli:main"
+getodo = "getodo.getodo_cli:main"

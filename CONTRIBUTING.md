@@ -6,7 +6,7 @@ To setup `getodo` for contributing, follow these steps
 
 - Create a python [virtual environment](https://docs.python.org/3/tutorial/venv.html) [OPTIONAL]
 
-- You can either use ```pip install -r requirements_dev.txt``` or `poetry install` to install the required libraries.
+- You can either use ```pip install -r requirements_dev.txt``` 
 
 - It is recommended that you create a branch for the bug fix/feature ``` git branch feature_name``` and then work on it ```git checkout feature_name``` 
 
