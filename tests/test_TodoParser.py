@@ -16,5 +16,5 @@ def test_TodoParser(tmp_path):
                 2: 'TODO: Todo2'
             }
         }
-    actual_output = getodo.TodoParser(path.abspath("tests/data/"), tmp_path / "todo.txt", False).output
+    actual_output = getodo.TodoParser(path.abspath("tests/data/"), tmp_path / "todo.txt", False, ["data/ignore.cpp", "data/ignore.py"]).output
     assert actual_output == expected_output

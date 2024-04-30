@@ -143,6 +143,4 @@ class TodoParser:
             utils.print_error(e)
 
 
-
-# TODO: Then move to user ignore
 # TODO: IDEA: Find a way to support multi line TODO's without having to type TODO in each line

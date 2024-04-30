@@ -41,10 +41,6 @@ def main():
 if __name__ == '__main__':
     main()
 
-# TODO: Next implement the ignore flag
-
-
-
 
 # -------------------- HOW THE FLAGS WORK--------------------
 
@@ -53,5 +49,6 @@ if __name__ == '__main__':
 # getodo parse_path -o out_file -> Saves to file provided by the user
 # getodo parse_path -t -o -> Prints to term and stores to out file(rn default, in future will be changed when configs are added)
 # getodo parse_path -t -o filename -> Prints to term and stores to outfile(name specified by user)
+# getodo parse_path -i ignorepath1 ignorepath2 ... -> Stores to default outfile and ignores the given ignore paths(i.e does not parse for TODO(s))
 
 # -----------------------------------------------------------
