@@ -47,7 +47,7 @@ def add_to_gitignore(parse_path: str, out_file: str) -> None:
                         exit(0)
             with open(gitignore_file, "a") as f:
                 f.write(out_file + "\n")
-                print(Fore.GREEN + Style.BRIGHT + f"Appended {out_file} to .gitignore" + Style.RESET_ALL)
+                print(Fore.GREEN + Style.BRIGHT + f"Appended {out_file} to {gitignore_root}" + Style.RESET_ALL)
         except Exception as e:
             print_error(e)
 
@@ -63,5 +63,3 @@ def is_ignored(parse_path: str, file_path: str, list_ignored: list) -> bool:
         if file_path.endswith(ignore):
             return True
     return False
-
-# TODO: Bug, not being added to gitignore

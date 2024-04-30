@@ -5,7 +5,7 @@ try:
 except ImportError:
     import utils
 
-from os import path, scandir
+from os import path, scandir, getcwd
 from colorama import Fore, Style, init
 
 class TodoParser:
@@ -20,7 +20,7 @@ class TodoParser:
         self._ignored: list = self.cfg['default_ignored']
         self.output: dict = {}
 
-        self.parse_path: str = parse_path
+        self.parse_path: str = parse_path if not parse_path == "." else getcwd()
         # Create a out file specified by user or a default  in the folder where `getodo` is run
         self.out_file: str = out_file 
         self.print_to_term: bool = print_to_term
@@ -107,7 +107,8 @@ class TodoParser:
                 current_comment_syntax = utils.get_comment_syntax(f.name, self._comments)
                 
                 if not current_comment_syntax:
-                    print(f"File type of {f.name} is not yet implemented [ADD TO IGNORE FILES]")
+                    # print(f"File type of {f.name} is not yet implemented [ADD TO IGNORE FILES]")
+                    pass
                 
                 else:
                     line_num = 0

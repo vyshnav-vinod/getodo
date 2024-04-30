@@ -36,6 +36,9 @@
     ".json",
     ".txt",
     ".md",
-    ".sh"
+    ".sh",
+    ".lock",
+    ".toml",
+    ".yaml"
   ]
 }
