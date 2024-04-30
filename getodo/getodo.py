@@ -14,17 +14,25 @@ class TodoParser:
         
         init() # Colorama
 
-        self.cfg = utils.load_getodo_cfg()
-        self._todo = self.cfg['_todo']
-        self._comments = self.cfg['comment_syntax']
-        self._ignored = self.cfg['default_ignored']
-        self.output = {}
+        self.cfg: dict = utils.load_getodo_cfg()
+        self._todo: list = self.cfg['_todo']
+        self._comments: dict = self.cfg['comment_syntax']
+        self._ignored: list = self.cfg['default_ignored']
+        self.output: dict = {}
 
         self.parse_path: str = parse_path
         # Create a out file specified by user or a default  in the folder where `getodo` is run
         self.out_file: str = out_file 
         self.print_to_term: bool = print_to_term
-        self.ignore = ignore
+        self.ignore: list = ignore
+
+        if self.ignore:
+            # User provided path(s) to ignore
+            for item in self.ignore:
+                if path.basename(item):
+                    self._ignored.append(path.basename(item))
+                else:
+                    self._ignored.append(path.dirname(item))
 
         if path.isdir(parse_path):
             # User provided a directory to parse
@@ -74,7 +82,7 @@ class TodoParser:
         
         for contents in dir_contents:
             # use contents.name
-            if utils.is_ignored(contents, self._ignored):
+            if utils.is_ignored(contents.name, self._ignored):
                 continue
             
             if contents.is_dir():
@@ -136,7 +144,5 @@ class TodoParser:
 
 
 
-# TODO: Start by adding the default ignore folders and files
 # TODO: Then move to user ignore
-# Dont make the same mistake as before 
 # TODO: IDEA: Find a way to support multi line TODO's without having to type TODO in each line

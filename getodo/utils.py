@@ -56,15 +56,10 @@ def add_to_gitignore(parse_path: str, out_file: str) -> None:
 
 
 def is_ignored(file_path: str, list_ignored: list) -> bool:
-    file_path = path.basename(file_path)
-    if is_venv(file_path):
-        return True
+    if path.exists(path.join(path.abspath(file_path), "pyvenv.cfg")):
+        return True # It is a virtual env directory
+
     for ignore in list_ignored:
         if file_path.endswith(ignore):
             return True
     return False
-
-
-def is_venv(dir: str) -> bool:
-    dir = path.abspath(dir)
-    return path.exists(path.join(dir, "pyvenv.cfg"))
