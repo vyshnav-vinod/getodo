@@ -35,6 +35,7 @@
     ".gitignore",
     ".json",
     ".txt",
-    ".md"
+    ".md",
+    ".sh"
   ]
 }
