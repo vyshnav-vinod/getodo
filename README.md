@@ -64,6 +64,10 @@ Replace `input_path` with the path to the folder/file you want to parse. You can
 
 `-i, --ignore` : Ignore parsing the directories/files provided as arguments to this option
 
+## Additional Configurations
+
+Right now, `getodo` only supports editing the `getodo_cfg.json` directly to add some additional configs. In the future, a `-c,--config` command will be added so that anyone can add more configs(especially those who downloaded from `pip`). To add more comment syntax, change the default output file name, to add more default ignored folders and files and to even change the word to be parsed(i.e, If you want to parse comments beginning with `NOTE:` or `IMPORTANT:` , etc), go to `getodo_cfg.json` and add or remove the configs as you wish. Please note that you must stick to the given syntax or else the program will break. `getodo_cfg.json` can be found in the `getodo/` directory for those who cloned the repo. For those who installed via `pip`, please refer to this [link](https://stackoverflow.com/questions/29980798/where-does-pip-install-its-packages) and find out where the `getodo` folder is present and make your changes in there. You can always ask for help by raising an [issue](https://github.com/vyshnav-vinod/getodo/issues) and i will be glad to help.
+
 ## Contributing
 
 All contributions are welcome. You can submit a issue/bug or request for a feature or ask for help in the [issues](https://github.com/vyshnav-vinod/getodo/issues) tab.

@@ -34,8 +34,8 @@ def print_error(e: Exception | str) -> None:
 
 
 def add_to_gitignore(parse_path: str, out_file: str) -> None:
-    # Assume .gitignore is in the root of the input_path
-    gitignore_root = path.abspath(path.dirname(parse_path))
+    # Assume .gitignore is in the directory of the parse_path
+    gitignore_root = path.abspath(parse_path)
     gitignore_file = path.join(gitignore_root, ".gitignore")
    
     if path.exists(gitignore_file):
