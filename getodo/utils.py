@@ -3,7 +3,6 @@
 from os import path
 from json import loads
 from colorama import Fore, Style
-from re import match
 
 
 def load_getodo_cfg() -> dict:
@@ -59,7 +58,6 @@ def is_ignored(parse_path: str, file_path: str, list_ignored: list) -> bool:
     if path.exists(path.join(path.abspath(path.join(parse_path, file_path)), "pyvenv.cfg")):
         return True # It is a virtual env directory
 
-    for ignore in list_ignored:
-        if file_path.endswith(ignore):
+    if file_path.split('.')[-1] in list_ignored:
             return True
     return False

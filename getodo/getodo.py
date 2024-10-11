@@ -17,7 +17,8 @@ class TodoParser:
         self.cfg: dict = utils.load_getodo_cfg()
         self._todo: list = self.cfg['_todo']
         self._comments: dict = self.cfg['comment_syntax']
-        self._ignored: list = self.cfg['default_ignored']
+        # The below adjustment is done to support the file equal check made in utils.is_ignored()
+        self._ignored: list = [x.replace('.', '') for x in self.cfg['default_ignored']]
         self.output: dict = {}
 
         self.parse_path: str = parse_path if not parse_path == "." else getcwd()
@@ -51,7 +52,6 @@ class TodoParser:
             # User provided a file to parse
             self.parse_file(parse_path)
             pass
-        
         if not self.output:
             print(Fore.RED + Style.BRIGHT + "NO TODO (s) found" + Style.RESET_ALL)
             exit(0)
@@ -92,7 +92,6 @@ class TodoParser:
             # use contents.name
             if utils.is_ignored(self.parse_path, contents.name, self._ignored):
                 continue
-            
             if contents.is_dir():
                 self.parse_dir(contents.path)
             
