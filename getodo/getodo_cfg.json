@@ -25,11 +25,8 @@
   "_todo": ["TODO:", "TODO :"],
   "default_ignored": [
     ".git",
-<<<<<<< Updated upstream
-=======
     ".github",
     ".gitignore",
->>>>>>> Stashed changes
     "__pycache__",
     ".pytest_cache",
     ".mypy_cache",
@@ -44,15 +41,11 @@
     ".sh",
     ".lock",
     ".toml",
-<<<<<<< Updated upstream
-    ".yaml"
-=======
     ".yaml",
     ".bak",
     ".zip",
     ".tar.gz",
     ".tar",
     ".gz"
->>>>>>> Stashed changes
   ]
 }
